@@ -11,7 +11,11 @@ elif command -v "tmux-agent-sidebar" &>/dev/null; then
 fi
 
 if [[ -z "$SIDEBAR_BINARY" ]]; then
-    tmux run-shell -b "bash '$PLUGIN_DIR/install-wizard.sh'"
+    if [[ "$(tmux show-option -gqv @sidebar_install_binary)" == "1" ]]; then
+        tmux run-shell "bash '$PLUGIN_DIR/install-wizard.sh' download-binary"
+    else
+        tmux run-shell -b "bash '$PLUGIN_DIR/install-wizard.sh'"
+    fi
     exit 0
 fi
 
